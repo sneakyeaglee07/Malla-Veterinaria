@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Malla Curricular Veterinaria (UBA)</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Roboto, sans-serif;
+      background-color: #f8f6fb;
+      margin: 0;
+      padding: 2rem;
+      color: #333;
+    }
+    h1 {
+      color: #5a3e92;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+    }
+    .column {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(90, 62, 146, 0.1);
+      padding: 1rem;
+      width: 250px;
+    }
+    .column h2 {
+      color: #5a3e92;
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+    .subject {
+      margin-bottom: 1rem;
+      position: relative;
+    }
+    .subject select {
+      width: 100%;
+      padding: 0.3rem;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      font-size: 0.9rem;
+    }
+    .subject.locked select {
+      background-color: #e9dffb;
+      pointer-events: none;
+    }
+    .tooltip {
+      visibility: hidden;
+      background-color: #5a3e92;
+      color: #fff;
+      text-align: left;
+      border-radius: 6px;
+      padding: 5px;
+      position: absolute;
+      z-index: 1;
+      bottom: 100%;
+      left: 0;
+      font-size: 0.75rem;
+      width: 220px;
+    }
+    .subject.locked:hover .tooltip {
+      visibility: visible;
+    }
+  </style>
+</head>
+<body>
+  <h1>Malla Curricular - Veterinaria (UBA)</h1>
+  <div class="container">
+    <div class="column" id="cbc">
+      <h2>CBC</h2>
+      <div class="subject" data-id="05">
+        Química
+        <select>
+          <option value="none">No cursada</option>
+          <option value="approved">Aprobada</option>
+        </select>
+      </div>
+      <div class="subject" data-id="08">
+        Biología
+        <select>
+          <option value="none">No cursada</option>
+          <option value="approved">Aprobada</option>
+        </select>
+      </div>
+      <div class="subject" data-id="24">
+        Sociedad y Estado
+        <select>
+          <option value="none">No cursada</option>
+          <option value="approved">Aprobada</option>
+        </select>
+      </div>
+      <div class="subject" data-id="40">
+        Pensamiento Científico
+        <select>
+          <option value="none">No cursada</option>
+          <option value="approved">Aprobada</option>
+        </select>
+      </div>
+      <div class="subject" data-id="51">
+        Matemáticas
+        <select>
+          <option value="none">No cursada</option>
+          <option value="approved">Aprobada</option>
+        </select>
+      </div>
+      <div class="subject" data-id="53">
+        Física e Int. Biofísica
+        <select>
+          <option value="none">No cursada</option>
+          <option value="approved">Aprobada</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="column" id="year1">
+      <h2>Primer Año</h2>
+      <div class="subject" data-id="201" data-reqs="05,08,24,40,51,53">
+        Anatomía I
+        <select>
+          <option value="none">No cursada</option>
+          <option value="regular">Regular</option>
+          <option value="approved">Aprobada</option>
+        </select>
+        <div class="tooltip">Requiere CBC completo</div>
+      </div>
+      <div class="subject" data-id="203" data-reqs="05,08,24,40,51,53">
+        Química Orgánica
+        <select>
+          <option value="none">No cursada</option>
+          <option value="regular">Regular</option>
+          <option value="approved">Aprobada</option>
+        </select>
+        <div class="tooltip">Requiere CBC completo</div>
+      </div>
+      <div class="subject" data-id="603" data-reqs="05,08,24,40,51,53">
+        Elementos de Estadística
+        <select>
+          <option value="none">No cursada</option>
+          <option value="regular">Regular</option>
+          <option value="approved">Aprobada</option>
+        </select>
+        <div class="tooltip">Requiere CBC completo</div>
+      </div>
+      <div class="subject" data-id="206" data-reqs="05,08,24,40,51,53">
+        Anatomía II
+        <select>
+          <option value="none">No cursada</option>
+          <option value="regular">Regular</option>
+          <option value="approved">Aprobada</option>
+        </select>
+        <div class="tooltip">Requiere CBC completo</div>
+      </div>
+      <div class="subject" data-id="202" data-reqs="203:regular,603:regular">
+        Física Biológica
+        <select>
+          <option value="none">No cursada</option>
+          <option value="regular">Regular</option>
+          <option value="approved">Aprobada</option>
+        </select>
+        <div class="tooltip">Requiere Química Orgánica y Estadística regulares</div>
+      </div>
+      <div class="subject" data-id="604" data-reqs="603:regular">
+        Estadística Analítica
+        <select>
+          <option value="none">No cursada</option>
+          <option value="regular">Regular</option>
+          <option value="approved">Aprobada</option>
+        </select>
+        <div class="tooltip">Requiere Estadística regular</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const subjects = document.querySelectorAll('.subject');
+
+    function loadState() {
+      subjects.forEach(subject => {
+        const id = subject.getAttribute('data-id');
+        const select = subject.querySelector('select');
+        const saved = localStorage.getItem(`subject_${id}`);
+        if (saved) select.value = saved;
+      });
+    }
+
+    function checkDependencies() {
+      subjects.forEach(subject => {
+        const reqs = subject.getAttribute('data-reqs');
+        if (!reqs) return;
+
+        const select = subject.querySelector('select');
+        let locked = false;
+        const reqList = reqs.split(',');
+
+        for (const req of reqList) {
+          let [id, type] = req.split(':');
+          const reqSelect = document.querySelector(`.subject[data-id="${id}"] select`);
+          const val = reqSelect?.value || 'none';
+          const reqState = type || 'approved';
+          if (reqState === 'regular') {
+            if (val !== 'regular' && val !== 'approved') locked = true;
+          } else {
+            if (val !== 'approved') locked = true;
+          }
+        }
+
+        subject.classList.toggle('locked', locked);
+      });
+    }
+
+    subjects.forEach(subject => {
+      const select = subject.querySelector('select');
+      select.addEventListener('change', () => {
+        const id = subject.getAttribute('data-id');
+        localStorage.setItem(`subject_${id}`, select.value);
+        checkDependencies();
+      });
+    });
+
+    loadState();
+    checkDependencies();
+  </script>
+</body>
+</html>
+
+<div class="column" id="year2">
+  <h2>Segundo Año</h2>
+
+  <div class="subject" data-id="205" data-reqs="201:regular,202:regular,203:regular">
+    Histología y Embriología
+    <select>
+      <option value="none">No cursada</option>
+      <option value="regular">Regular</option>
+      <option value="approved">Aprobada</option>
+    </select>
+    <div class="tooltip">Requiere Anatomía I, Física Biológica y Química Orgánica regulares</div>
+  </div>
+
+  <div class="subject" data-id="204" data-reqs="202:regular,203:regular">
+    Química Biológica
+    <select>
+      <option value="none">No cursada</option>
+      <option value="regular">Regular</option>
+      <option value="approved">Aprobada</option>
+    </select>
+    <div class="tooltip">Requiere Física Biológica y Química Orgánica regulares</div>
+  </div>
+
+  <div class="subject" data-id="207" data-reqs="202:regular,204:regular,203:approved">
+    Fisiología Animal y Bioquímica Fisiológica
+    <select>
+      <option value="none">No cursada</option>
+      <option value="regular">Regular</option>
+      <option value="approved">Aprobada</option>
+    </select>
+    <div class="tooltip">Requiere Física Biológica y Química Biológica regulares + Química Orgánica aprobada</div>
+  </div>
+
+  <div class="subject" data-id="602" data-reqs="204:regular,205:regular">
+    Parasitología
+    <select>
+      <option value="none">No cursada</option>
+      <option value="regular">Regular</option>
+      <option value="approved">Aprobada</option>
+    </select>
+    <div class="tooltip">Requiere Química Biológica y Histología regulares</div>
+  </div>
+
+  <div class="subject" data-id="401" data-reqs="203:regular">
+    Bases Agrícolas para la Producción Animal
+    <select>
+      <option value="none">No cursada</option>
+      <option value="regular">Regular</option>
+      <option value="approved">Aprobada</option>
+    </select>
+    <div class="tooltip">Requiere Química Orgánica regular</div>
+  </div>
+</div>
+<div class="column" id="year3">
+  <h2>Tercer Año</h2>
+
+  <div class="subject" data-id="701" data-reqs="05,08,24,40,51,53">
+    Actividades de Orientación
+    <select>
+      <option value="none">No cursada</option>
+      <option value="approved">Aprobada</option>
+    </select>
+    <div class="tooltip">Requiere CBC completo</div>
+  </div>
+
+  <div class="subject" data-id="208" data-reqs="05,08,24,40,51,53">
+    Inglés Técnico
+    <select>
+      <option value="none">No cursada</option>
+      <option value="approved">Aprobada</option>
+    </select>
+    <div class="tooltip">Requiere CBC completo</div>
+  </div>
+
+  <div class="subject" data-id="814" data-reqs="05,08,24,40,51,53">
+    Sociología
+    <select>
+      <option value="none">No cursada</option>
+      <option value="approved">Aprobada</option>
+    </select>
+    <div class="tooltip">Requiere CBC completo</div>
+  </div>
+
+  <div class="subject" data-id="301" data-reqs="204:regular,205:regular">
+    Microbiología
+    <select>
+      <option value="none">No cursada</option>
+      <option value="regular">Regular</option>
+      <option value="approved">Aprobada</option>
+    </select>
+    <div class="tooltip">Requiere Química Biológica y Histología regulares</div>
+  </div>
+
+  <div class="subject" data-id="402" data-reqs="207:regular,401:regular,204:approved">
+    Principios de Nutrición y Alimentación
+    <select>
+      <option value="none">No cursada</option>
+      <option value="regular">Regular</option>
+      <option value="approved">Aprobada</option>
+    </select>
+    <div class="tooltip">Requiere Fisiología y Bases Agrícolas regulares + Química Biológica aprobada</div>
+  </div>
+
+  <div class="subject" data-id="403" data-reqs="603:regular,204:approved,205:approved">
+    Genética Básica
+    <select>
+      <option value="none">No cursada</option>
+      <option value="regular">Regular</option>
+      <option value="approved">Aprobada</option>
+    </select>
+    <div class="tooltip">Requiere Estadística regular + Química Biológica y Histología aprobadas</div>
+  </div>
+
+  <div class="subject" data-id="405" data-reqs="603:approved">
+    Economía
+    <select>
+      <option value="none">No cursada</option>
+      <option value="regular">Regular</option>
+      <option value="approved">Aprobada</option>
+    </select>
+    <div class="tooltip">Requiere Estadística aprobada</div>
+  </div>
+
+  <div class="subject" data-id="302" data-reqs="207:regular,301:regular,602:regular,204:approved,205:approved">
+    Farmacología y Bases de la Terapéutica
+    <select>
+      <option value="none">No cursada</option>
+      <option value="regular">Regular</option>
+      <option value="approved">Aprobada</option>
+    </select>
+    <div class="tooltip">Requiere Fisiología, Microbiología y Parasitología regulares + Química Biológica y Histología aprobadas</div>
+  </div>
+
+  <div class="subject" data-id="303" data-reqs="207:regular,301:regular,602:regular,204:approved,205:approved">
+    Inmunología Básica
+    <select>
+      <option value="none">No cursada</option>
+      <option value="regular">Regular</option>
+      <option value="approved">Aprobada</option>
+    </select>
+    <div class="tooltip">Requiere Fisiología, Microbiología y Parasitología regulares + Química Biológica y Histología aprobadas</div>
+  </div>
+
+  <div class="subject" data-id="503" data-reqs="301:regular,602:regular,207:approved">
+    Medicina I
+    <select>
+      <option value="none">No cursada</option>
+      <option value="regular">Regular</option>
+      <option value="approved">Aprobada</option>
+    </select>
+    <div class="tooltip">Requiere Microbiología y Parasitología regulares + Fisiología aprobada</div>
+  </div>
+</div>
+<div class="column" id="year4">
+  <h2>Cuarto Año</h2>
+  <div class="subject" data-id="304" data-reqs="301:regular,303:regular,602:regular,207:approved">
+    Patología Básica
+    <select><option value="none">No cursada</option><option value="regular">Regular</option><option value="approved">Aprobada</option></select>
+    <div class="tooltip">Requiere Microbiología, Inmunología y Parasitología regulares + Fisiología aprobada</div>
+  </div>
+  <div class="subject" data-id="406" data-reqs="604:regular,403:regular,603:approved">
+    Genética de Poblaciones
+    <select><option value="none">No cursada</option><option value="regular">Regular</option><option value="approved">Aprobada</option></select>
+    <div class="tooltip">Requiere Estadística Analítica y Genética Básica regulares + Estadística aprobada</div>
+  </div>
+  <div class="subject" data-id="501" data-reqs="302:regular,207:approved">
+    Principios de la Anestesiología
+    <select><option value="none">No cursada</option><option value="regular">Regular</option><option value="approved">Aprobada</option></select>
+    <div class="tooltip">Requiere Farmacología regular + Fisiología aprobada</div>
+  </div>
+  <div class="subject" data-id="502" data-reqs="302:regular,301:approved">
+    Cirugía
+    <select><option value="none">No cursada</option><option value="regular">Regular</option><option value="approved">Aprobada</option></select>
+    <div class="tooltip">Requiere Farmacología regular + Microbiología aprobada</div>
+  </div>
+  <div class="subject" data-id="605" data-reqs="301:regular,602:regular,604:regular,603:approved">
+    Principios de la Epidemiología
+    <select><option value="none">No cursada</option><option value="regular">Regular</option><option value="approved">Aprobada</option></select>
+    <div class="tooltip">Requiere Microbiología, Parasitología y Estadística Analítica regulares + Estadística aprobada</div>
+  </div>
+  <div class="subject" data-id="607" data-reqs="303:regular,503:regular,302:regular,304:regular,301:approved,605:approved">
+    Enfermedades Infecciosas
+    <select><option value="none">No cursada</option><option value="regular">Regular</option><option value="approved">Aprobada</option></select>
+    <div class="tooltip">Requiere Inmunología, Medicina I, Farmacología y Patología regulares + Microbiología y Epidemiología aprobadas</div>
+  </div>
+  <div class="subject" data-id="606" data-reqs="304:regular,302:regular,303:regular,503:regular,602:approved,605:approved">
+    Enfermedades Parasitarias
+    <select><option value="none">No cursada</option><option value="regular">Regular</option><option value="approved">Aprobada</option></select>
+    <div class="tooltip">Requiere Patología, Farmacología, Inmunología y Medicina I regulares + Parasitología y Epidemiología aprobadas</div>
+  </div>
+  <div class="subject" data-id="505" data-reqs="304:regular,503:regular,302:regular,402:approved,303:approved,403:approved">
+    Medicina III
+    <select><option value="none">No cursada</option><option value="regular">Regular</option><option value="approved">Aprobada</option></select>
+    <div class="tooltip">Requiere Patología, Medicina I y Farmacología regulares + Nutrición, Inmunología y Genética Básica aprobadas</div>
+  </div>
+</div>
+
+<div class="column" id="year5">
+  <h2>Quinto Año</h2>
+  <div class="subject" data-id="407" data-reqs="402:regular,405:regular,406:regular,606:regular,607:regular,401:approved">
+    Producción de Ovinos
+    <select><option value="none">No cursada</option><option value="regular">Regular</option><option value="approved">Aprobada</option></select>
+    <div class="tooltip">Requiere Nutrición, Economía, Genética de Poblaciones, Enfermedades Parasitarias e Infecciosas regulares + Bases Agrícolas aprobada</div>
+  </div>
+  <!-- Repetir misma estructura para 408 a 412 -->
+  <!-- Ejemplo: Producción de Bovinos de Carne -->
+  <div class="subject" data-id="408" data-reqs="402:regular,607:regular,606:regular,406:regular,405:regular,401:approved">
+    Producción de Bovinos de Carne
+    <select><option value="none">No cursada</option><option value="regular">Regular</option><option value="approved">Aprobada</option></select>
+    <div class="tooltip">Mismos requisitos que Producción de Ovinos</div>
+  </div>
+  <!-- ...otras producciones animales... -->
+  <div class="subject" data-id="305" data-reqs="607:regular,301:approved,303:approved">
+    Virología Animal
+    <select><option value="none">No cursada</option><option value="regular">Regular</option><option value="approved">Aprobada</option></select>
+    <div class="tooltip">Requiere Enfermedades Infecciosas regular + Microbiología e Inmunología aprobadas</div>
+  </div>
+  <div class="subject" data-id="504" data-reqs="304:regular,503:regular,302:regular,403:approved,303:approved,402:approved">
+    Medicina II
+    <select><option value="none">No cursada</option><option value="regular">Regular</option><option value="approved">Aprobada</option></select>
+    <div class="tooltip">Requiere Patología, Medicina I y Farmacología regulares + Genética, Inmunología y Nutrición aprobadas</div>
+  </div>
+  <div class="subject" data-id="506" data-reqs="304:regular,503:regular,302:regular,403:approved,303:approved">
+    Medicina IV
+    <select><option value="none">No cursada</option><option value="regular">Regular</option><option value="approved">Aprobada</option></select>
+    <div class="tooltip">Similares requisitos a Medicina II</div>
+  </div>
+  <div class="subject" data-id="507" data-reqs="304:regular,503:regular,302:regular,403:approved,303:approved">
+    Medicina V
+    <select><option value="none">No cursada</option><option value="regular">Regular</option><option value="approved">Aprobada</option></select>
+    <div class="tooltip">Similares requisitos a Medicina IV</div>
+  </div>
+  <div class="subject" data-id="608" data-reqs="607:regular,606:regular,605:approved">
+    Salud Pública
+    <select><option value="none">No cursada</option><option value="regular">Regular</option><option value="approved">Aprobada</option></select>
+    <div class="tooltip">Enfermedades Infecciosas y Parasitarias regulares + Epidemiología aprobada</div>
+  </div>
+  <div class="subject" data-id="609" data-reqs="606:regular,607:regular,605:approved">
+    Tecnología, Protección e Inspección de Alimentos
+    <select><option value="none">No cursada</option><option value="regular">Regular</option><option value="approved">Aprobada</option></select>
+    <div class="tooltip">Requisitos similares a Salud Pública</div>
+  </div>
+  <div class="subject" data-id="508" data-reqs="504:
