@@ -6,7 +6,7 @@
   <style>
     body {
       font-family: Georgia, "Times New Roman", serif;
-      background-color: #c0a4c9;
+      background-color: #E6E6FA;
       margin: 0;
       padding: 2rem;
       color: #333;
@@ -23,7 +23,7 @@
       justify-content: center;
     }
     .column {
-      background-color: #E6E6FA;
+      background-color: #fff;
       border-radius: 8px;
       box-shadow: 0 2px 6px rgba(90, 62, 146, 0.1);
       padding: 1rem;
@@ -40,6 +40,7 @@
     }
     .subject select {
       width: 100%;
+      background-color: #a195c0;
       padding: 0.3rem;
       border-radius: 4px;
       border: 1px solid #ccc;
@@ -224,9 +225,10 @@
       <option value="approved">Aprobada</option>
     </select>
     <div class="tooltip">Requiere Química Orgánica regular</div>
-  </div>
 </div>
-
+    </div>
+  </div>
+  
   <div class="column" id="approvebeforeyear3">
   <h2>Aprobar antes de Tercer Año</h2>
   <div class="subject" data-id="701" data-reqs="05,08,24,40,51,53">
@@ -252,6 +254,8 @@
       <option value="approved">Aprobada</option>
     </select>
     <div class="tooltip">Requiere CBC completo</div>
+</div>
+    </div>
   </div>
 
      <div class="column" id="year3">
@@ -318,8 +322,9 @@
       <option value="approved">Aprobada</option>
     </select>
     <div class="tooltip">Requiere Microbiología y Parasitología regulares + Fisiología aprobada</div>
-  </div>
 </div>
+    </div>
+  </div>
     
 <div class="column" id="year4">
   <h2>Cuarto Año</h2>
@@ -362,9 +367,10 @@
     Medicina III
     <select><option value="none">No cursada</option><option value="regular">Regular</option><option value="approved">Aprobada</option></select>
     <div class="tooltip">Requiere Patología, Medicina I y Farmacología regulares + Nutrición, Inmunología y Genética Básica aprobadas</div>
-  </div>
 </div>
-
+    </div>
+  </div>
+  
 <div class="column" id="year5">
   <h2>Quinto Año</h2>
   <div class="subject" data-id="407" data-reqs="402:regular,405:regular,406:regular,606:regular,607:regular,401:approved">
@@ -436,8 +442,9 @@
     Práctica Hospitalaria en Grandes Animales I
     <select><option value="none">No cursada</option><option value="regular">Regular</option><option value="approved">Aprobada</option></select>
     <div class="tooltip">Requisitos similares a Práctica Hospitalaria en Pequeños Animales I</div>
-  </div>
 </div>
+    </div>
+  </div>
 
   <div class="column" id="approvebeforeyear6-compulsoryhighercycle">
   <h2>Aprobar antes de Sexto Año - Ciclo Superior Obligatorio</h2>
@@ -448,8 +455,10 @@
       <option value="approved">Aprobada</option>
     </select>
     <div class="tooltip">Requiere Sociología regular</div>
+</div>
+    </div>
   </div>
-
+  
     <div class="column" id="year6-compulsoryhighercycle">
   <h2> Sexto Año - Ciclo Superior Obligatorio</h2>
   <div class="subject" data-id="668" data-reqs="508:regular,505:approved,503:approved,507:approved,502:approved,501:approved">
@@ -486,9 +495,10 @@
     Asignatura Optativa
     <select><option value="none">No cursada</option><option value="regular">Regular</option><option value="approved">Aprobada</option></select>
     <div class="tooltip">Requiere todas las asignaturas regulares o aprobadas que permitan cursar al menos un Eje del Ciclo Superior Obligatorio</div>
+</div>
+    </div>
   </div>
-  </div>
-
+  
     <div class="column" id="supervisedprofessionalpractices">
   <h2> Prácticas Profesionales Supervisadas </h2>
   <div class="subject" data-reqs="CBC:approved,672:approved,673-678:approved,year1:regular,year2:regular,year3:regular,year4:regular,year5:regular">
