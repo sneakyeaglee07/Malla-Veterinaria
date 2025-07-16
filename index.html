@@ -176,61 +176,8 @@
     </div>
   </div>
 
-  <script>
-    const subjects = document.querySelectorAll('.subject');
-
-    function loadState() {
-      subjects.forEach(subject => {
-        const id = subject.getAttribute('data-id');
-        const select = subject.querySelector('select');
-        const saved = localStorage.getItem(`subject_${id}`);
-        if (saved) select.value = saved;
-      });
-    }
-
-    function checkDependencies() {
-      subjects.forEach(subject => {
-        const reqs = subject.getAttribute('data-reqs');
-        if (!reqs) return;
-
-        const select = subject.querySelector('select');
-        let locked = false;
-        const reqList = reqs.split(',');
-
-        for (const req of reqList) {
-          let [id, type] = req.split(':');
-          const reqSelect = document.querySelector(`.subject[data-id="${id}"] select`);
-          const val = reqSelect?.value || 'none';
-          const reqState = type || 'approved';
-          if (reqState === 'regular') {
-            if (val !== 'regular' && val !== 'approved') locked = true;
-          } else {
-            if (val !== 'approved') locked = true;
-          }
-        }
-
-        subject.classList.toggle('locked', locked);
-      });
-    }
-
-    subjects.forEach(subject => {
-      const select = subject.querySelector('select');
-      select.addEventListener('change', () => {
-        const id = subject.getAttribute('data-id');
-        localStorage.setItem(`subject_${id}`, select.value);
-        checkDependencies();
-      });
-    });
-
-    loadState();
-    checkDependencies();
-  </script>
-</body>
-</html>
-
 <div class="column" id="year2">
   <h2>Segundo Año</h2>
-
   <div class="subject" data-id="205" data-reqs="201:regular,202:regular,203:regular">
     Histología y Embriología
     <select>
@@ -240,7 +187,6 @@
     </select>
     <div class="tooltip">Requiere Anatomía I, Física Biológica y Química Orgánica regulares</div>
   </div>
-
   <div class="subject" data-id="204" data-reqs="202:regular,203:regular">
     Química Biológica
     <select>
@@ -250,7 +196,6 @@
     </select>
     <div class="tooltip">Requiere Física Biológica y Química Orgánica regulares</div>
   </div>
-
   <div class="subject" data-id="207" data-reqs="202:regular,204:regular,203:approved">
     Fisiología Animal y Bioquímica Fisiológica
     <select>
@@ -260,7 +205,6 @@
     </select>
     <div class="tooltip">Requiere Física Biológica y Química Biológica regulares + Química Orgánica aprobada</div>
   </div>
-
   <div class="subject" data-id="602" data-reqs="204:regular,205:regular">
     Parasitología
     <select>
@@ -270,7 +214,6 @@
     </select>
     <div class="tooltip">Requiere Química Biológica y Histología regulares</div>
   </div>
-
   <div class="subject" data-id="401" data-reqs="203:regular">
     Bases Agrícolas para la Producción Animal
     <select>
@@ -281,9 +224,9 @@
     <div class="tooltip">Requiere Química Orgánica regular</div>
   </div>
 </div>
-<div class="column" id="year3">
-  <h2>Tercer Año</h2>
 
+  <div class="column" id="approvebeforeyear3">
+  <h2>Aprobar antes de Tercer Año</h2>
   <div class="subject" data-id="701" data-reqs="05,08,24,40,51,53">
     Actividades de Orientación
     <select>
@@ -292,7 +235,6 @@
     </select>
     <div class="tooltip">Requiere CBC completo</div>
   </div>
-
   <div class="subject" data-id="208" data-reqs="05,08,24,40,51,53">
     Inglés Técnico
     <select>
@@ -301,7 +243,6 @@
     </select>
     <div class="tooltip">Requiere CBC completo</div>
   </div>
-
   <div class="subject" data-id="814" data-reqs="05,08,24,40,51,53">
     Sociología
     <select>
@@ -311,6 +252,8 @@
     <div class="tooltip">Requiere CBC completo</div>
   </div>
 
+     <div class="column" id="year3">
+      <h2>Tercer Año</h2>
   <div class="subject" data-id="301" data-reqs="204:regular,205:regular">
     Microbiología
     <select>
@@ -320,7 +263,6 @@
     </select>
     <div class="tooltip">Requiere Química Biológica y Histología regulares</div>
   </div>
-
   <div class="subject" data-id="402" data-reqs="207:regular,401:regular,204:approved">
     Principios de Nutrición y Alimentación
     <select>
@@ -330,7 +272,6 @@
     </select>
     <div class="tooltip">Requiere Fisiología y Bases Agrícolas regulares + Química Biológica aprobada</div>
   </div>
-
   <div class="subject" data-id="403" data-reqs="603:regular,204:approved,205:approved">
     Genética Básica
     <select>
@@ -340,7 +281,6 @@
     </select>
     <div class="tooltip">Requiere Estadística regular + Química Biológica y Histología aprobadas</div>
   </div>
-
   <div class="subject" data-id="405" data-reqs="603:approved">
     Economía
     <select>
@@ -350,7 +290,6 @@
     </select>
     <div class="tooltip">Requiere Estadística aprobada</div>
   </div>
-
   <div class="subject" data-id="302" data-reqs="207:regular,301:regular,602:regular,204:approved,205:approved">
     Farmacología y Bases de la Terapéutica
     <select>
@@ -360,7 +299,6 @@
     </select>
     <div class="tooltip">Requiere Fisiología, Microbiología y Parasitología regulares + Química Biológica y Histología aprobadas</div>
   </div>
-
   <div class="subject" data-id="303" data-reqs="207:regular,301:regular,602:regular,204:approved,205:approved">
     Inmunología Básica
     <select>
@@ -370,7 +308,6 @@
     </select>
     <div class="tooltip">Requiere Fisiología, Microbiología y Parasitología regulares + Química Biológica y Histología aprobadas</div>
   </div>
-
   <div class="subject" data-id="503" data-reqs="301:regular,602:regular,207:approved">
     Medicina I
     <select>
@@ -381,6 +318,7 @@
     <div class="tooltip">Requiere Microbiología y Parasitología regulares + Fisiología aprobada</div>
   </div>
 </div>
+    
 <div class="column" id="year4">
   <h2>Cuarto Año</h2>
   <div class="subject" data-id="304" data-reqs="301:regular,303:regular,602:regular,207:approved">
@@ -432,14 +370,31 @@
     <select><option value="none">No cursada</option><option value="regular">Regular</option><option value="approved">Aprobada</option></select>
     <div class="tooltip">Requiere Nutrición, Economía, Genética de Poblaciones, Enfermedades Parasitarias e Infecciosas regulares + Bases Agrícolas aprobada</div>
   </div>
-  <!-- Repetir misma estructura para 408 a 412 -->
-  <!-- Ejemplo: Producción de Bovinos de Carne -->
   <div class="subject" data-id="408" data-reqs="402:regular,607:regular,606:regular,406:regular,405:regular,401:approved">
     Producción de Bovinos de Carne
     <select><option value="none">No cursada</option><option value="regular">Regular</option><option value="approved">Aprobada</option></select>
     <div class="tooltip">Mismos requisitos que Producción de Ovinos</div>
   </div>
-  <!-- ...otras producciones animales... -->
+ <div class="subject" data-id="409" data-reqs="402:regular,607:regular,606:regular,406:regular,405:regular,401:approved">
+    Producción de Porcinos
+    <select><option value="none">No cursada</option><option value="regular">Regular</option><option value="approved">Aprobada</option></select>
+    <div class="tooltip">Mismos requisitos que Producción de Bovinos de Carne</div>
+  </div>
+   <div class="subject" data-id="410" data-reqs="402:regular,607:regular,606:regular,406:regular,405:regular,401:approved">
+    Prod. de Bovinos de Leche
+    <select><option value="none">No cursada</option><option value="regular">Regular</option><option value="approved">Aprobada</option></select>
+    <div class="tooltip">Mismos requisitos que Producción de Porcinos</div>
+  </div>
+  <div class="subject" data-id="411" data-reqs="402:regular,607:regular,606:regular,406:regular,405:regular,401:approved">
+    Producción de Aves
+    <select><option value="none">No cursada</option><option value="regular">Regular</option><option value="approved">Aprobada</option></select>
+    <div class="tooltip">Mismos requisitos que Prod. de Bovinos de Leche</div>
+  </div>
+  <div class="subject" data-id="412" data-reqs="402:regular,607:regular,606:regular,406:regular,405:regular,401:approved">
+    Producción de Equinos
+    <select><option value="none">No cursada</option><option value="regular">Regular</option><option value="approved">Aprobada</option></select>
+    <div class="tooltip">Mismos requisitos que Producción de Aves</div>
+  </div>
   <div class="subject" data-id="305" data-reqs="607:regular,301:approved,303:approved">
     Virología Animal
     <select><option value="none">No cursada</option><option value="regular">Regular</option><option value="approved">Aprobada</option></select>
@@ -470,4 +425,87 @@
     <select><option value="none">No cursada</option><option value="regular">Regular</option><option value="approved">Aprobada</option></select>
     <div class="tooltip">Requisitos similares a Salud Pública</div>
   </div>
-  <div class="subject" data-id="508" data-reqs="504:
+<div class="subject" data-id="508" data-reqs="504:regular,505:regular,506:regular,507:regular,606:regular,607:regular,502:regular,501:regular,503:approved,304:approved">
+    Práctica Hospitalaria en Pequeños Animales I
+    <select><option value="none">No cursada</option><option value="regular">Regular</option><option value="approved">Aprobada</option></select>
+    <div class="tooltip">Requiere Medicina II, Medicina III, Medicina IV, Medicina V, Enfermedades Parasitarias, Enfermedades Infecciosas, Cirugía y Principios de la Anestesiología regulares + Medicina I y Patología Básica aprobadas</div>
+  </div>
+  <div class="subject" data-id="509" data-reqs="504:regular,505:regular,506:regular,507:regular,606:regular,607:regular,502:regular,501:regular,503:approved,304:approved">
+    Práctica Hospitalaria en Grandes Animales I
+    <select><option value="none">No cursada</option><option value="regular">Regular</option><option value="approved">Aprobada</option></select>
+    <div class="tooltip">Requisitos similares a Práctica Hospitalaria en Pequeños Animales I</div>
+  </div>
+</div>
+
+  <div class="column" id="approvebeforeyear6-compulsoryhighercycle">
+  <h2>Aprobar antes de Sexto Año - Ciclo Superior Obligatorio</h2>
+  <div class="subject" data-id="209" data-reqs="814:regular">
+    Taller de Sociología Rural y Urbana y Prácticas Solidarias
+    <select>
+      <option value="none">No cursada</option>
+      <option value="approved">Aprobada</option>
+    </select>
+    <div class="tooltip">Requiere Sociología regular</div>
+  </div>
+
+    <div class="column" id="year6-compulsoryhighercycle">
+  <h2> Sexto Año - Ciclo Superior Obligatorio</h2>
+  <div class="subject" data-id="668" data-reqs="508:regular,505:approved,503:approved,507:approved,502:approved,501:approved">
+    Eje 1: Salud Animal en Pequeños Animales
+    <select><option value="none">No cursada</option><option value="regular">Regular</option><option value="approved">Aprobada</option></select>
+    <div class="tooltip">Requiere Práctica Hospitalaria en Pequeños Animales I regular + Medicina III, Medicina I, Medicina V, Cirugía y Principios de la Anestesiología aprobadas</div>
+  </div>
+  <div class="subject" data-id="669" data-reqs="509:regular,503:approved,505:approved,502:approved,501:approved">
+    Eje 2: Salud Animal en Grandes Animales
+    <select><option value="none">No cursada</option><option value="regular">Regular</option><option value="approved">Aprobada</option></select>
+    <div class="tooltip">Requiere Práctica Hospitalaria en Grandes Animales regular + Medicina I, Medicina III, Cirugía y Principios de la Anestesiología aprobadas</div>
+  </div>
+  <div class="subject" data-id="670" data-reqs="608:approved,607:approved,606:approved">
+    Eje 3: Medicina Preventiva y Salud Pública
+    <select><option value="none">No cursada</option><option value="regular">Regular</option><option value="approved">Aprobada</option></select>
+    <div class="tooltip">Requiere Salud Pública, Enfermedades Infecciosas y Enfermedades Parasitarias aprobadas</div>
+  </div>
+  <div class="subject" data-id="671" data-reqs="609:approved">
+    Eje 4: Inocuidad y Calidad de Alimentos
+    <select><option value="none">No cursada</option><option value="regular">Regular</option><option value="approved">Aprobada</option></select>
+    <div class="tooltip">Requiere Tecnología, Protección e Inspección Veterinario de Alimentos aprobada</div>
+  </div>
+  <div class="subject" data-id="672" data-reqs="407:regular,408:regular,409:regular,410:regular,411:regular,412:regular,505:approved,406:approved">
+    Eje 5: Producciones Animales
+    <select><option value="none">No cursada</option><option value="regular">Regular</option><option value="approved">Aprobada</option></select>
+    <div class="tooltip">Requiere Producción de Ovinos, Producción de Bovinos de Carne, Producción de Porcinos, Producción de Bovinos de Leche, Producción de Aves y Producción de Equinos regulares + Medicina III y Genética de Poblaciones aprobadas</div>
+  </div>
+  <div class="subject" data-id="673-678" data-reqs="406:regular,606:regular,607:regular,402:approved,304:approved">
+    Eje 6: Producción de Especies no Tradicionales y/o Alternativas
+    <select><option value="none">No cursada</option><option value="regular">Regular</option><option value="approved">Aprobada</option></select>
+    <div class="tooltip">Requiere Genética de Poblaciones, Enfermedades Parasitarias y Enfermedades Infecciosas regulares + Principios de Nutrición y Alimentación y Patología Básica aprobadas</div>
+  </div>
+  <div class="subject" data-reqs="year1:regularorapproved,year2:regularorapproved,year3:regularorapproved,year4:regularorapproved,year5:regularorapproved">
+    Asignatura Optativa
+    <select><option value="none">No cursada</option><option value="regular">Regular</option><option value="approved">Aprobada</option></select>
+    <div class="tooltip">Requiere todas las asignaturas regulares o aprobadas que permitan cursar al menos un Eje del Ciclo Superior Obligatorio</div>
+  </div>
+  </div>
+
+    <div class="column" id="supervisedprofessionalpractices">
+  <h2> Prácticas Profesionales Supervisadas </h2>
+  <div class="subject" data-reqs="CBC:approved,672:approved,673-678:approved,year1:regular,year2:regular,year3:regular,year4:regular,year5:regular">
+    Práctica Profesional Supervisada en Producción Animal
+    <select><option value="none">No cursada</option><option value="regular">Regular</option><option value="approved">Aprobada</option></select>
+    <div class="tooltip">Requiere asignaturas del CBC y los Ejes 5 y 6 aprobados y regulares las de Primer Año, Segundo Año, Tercer Año, Cuarto Año y Quinto Año</div>
+  </div>
+   <div class="subject" data-reqs="CBC:approved,668:approved,year1:regular,year2:regular,year3:regular,year4:regular,year5:regular">
+    Práctica Profesional Supervisada en Medicina Pequeños Animales
+    <select><option value="none">No cursada</option><option value="regular">Regular</option><option value="approved">Aprobada</option></select>
+    <div class="tooltip">Requiere asignaturas del CBC y el Eje 1 aprobados y regulares las de Primer Año, Segundo Año, Tercer Año, Cuarto Año y Quinto Año</div>
+  </div>
+   <div class="subject" data-reqs="CBC:approved,669:approved,year1:regular,year2:regular,year3:regular,year4:regular,year5:regular">
+    Práctica Profesional Supervisada en Medicina Grandes Animales
+    <select><option value="none">No cursada</option><option value="regular">Regular</option><option value="approved">Aprobada</option></select>
+    <div class="tooltip">Requiere asignaturas del CBC y el Eje 2 aprobados y regulares las de Primer Año, Segundo Año, Tercer Año, Cuarto Año y Quinto Año</div>
+  </div>
+   <div class="subject" data-reqs="CBC:approved,670:approved,671:approved,year1:regular,year2:regular,year3:regular,year4:regular,year5:regular">
+    Práctica Profesional Supervisada en Medicina Preventiva y Salud Pública
+    <select><option value="none">No cursada</option><option value="regular">Regular</option><option value="approved">Aprobada</option></select>
+    <div class="tooltip">Requiere asignaturas del CBC y los Ejes 3 4 aprobados y regulares las de Primer Año, Segundo Año, Tercer Año, Cuarto Año y Quinto Año</div>
+  </div>
